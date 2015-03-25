@@ -11,13 +11,15 @@
   
    <script language="javascript" type="text/javascript">
             // <!CDATA[
-            function loginButton() 
+            function addSchoolButton() 
             {
     $.ajax({
-        url: '/TeamRocket/Hello',
+        url: '/TeamRocket/AddSchool',
         type: 'GET',
         dataType: 'text',
-        data: {name : $("#name").val(), email: $("#email").val(), password: $("#password").val()},
+        data: {school_name : $("#school_name").val(), semesters : $("#semesters").val(), days_in_schedule : $("#days_in_schedule").val()
+        , periods_per_day : $("#periods_per_day").val(), lunch_range_begin : $("#lunch_range_begin").val(), lunch_range_end : $("#lunch_range_end").val(),
+     repeated_days: $("#repeated_days").val()},
         success: function (data)
         {
            $("#testH").html(data);
@@ -66,34 +68,34 @@
                         </br>
                                                 </br>
                                                                         </br>
-                            <form name = "registrationForm" action="" method="POST"> 
-                                <input type = "hidden" name = "target" value = "student"> 
+                            <form name = "schoolAddForm" action="" method="POST"> 
+                                <input type = "hidden" name = "target" value = "school"> 
                                     <td style = "width: 220px; height: 426px; vertical-align: top; text-align: left;">
                                         <p><span style = "font-size: 16pt"> <strong> <font color = "red" > * </font> School Name: </strong>
                                           <br/> 
                                         </span> 
-                                          <input id="name" name = "name"  style = "font-weight: bold; font-size:16pt; width:" type = "text" /> 
+                                          <input id="school_name" name = "school_name"  style = "font-weight: bold; font-size:16pt; width:" type = "text" /> 
                                           <br/>
                                           <span style = "font-size: 16pt"> 
                                             <strong > <font color = "red" > * </font > Semesters:
                                               <br/> 
                                             </strong>
                                           </span> 
-                                          <input
+                                          <input id ="semesters"
                                             name = "semesters"  style = "font-weight: bold; font-size: 16pt;width:" type = "text" /> 
                                           <br/>
                                           <span style = "font-size: 16pt"> <strong>
                                             <font color = "red">*</font> Days In Schedule:<br/> 
                                             </strong> 
                                           </span> 
-                                          <input id="days_in_Schedule" name = "days_in_Schedule"  style = "font-weight: bold; font-size: 16pt;width:" type = "text"/> 
+                                          <input id="days_in_schedule" name = "days_in_schedule"  style = "font-weight: bold; font-size: 16pt;width:" type = "text"/> 
                                           <span style = "font-size: 16pt"> 
                                           </span> <br/> 
                                           <span style = "font-size: 16pt"> <strong> <font color = "red"> * </font> Periods per Day:<br/> 
                                           </strong> 
                                           </span> 
-                                          <input name = "periods_per_day"  style = "font-weight: bold; font-size: 16pt;width:" type = "text"/> 
-                                          <br/> 
+                                          <input id = "periods_per_day" name = "periods_per_day"  style = "font-weight: bold; font-size: 16pt;width:" type = "text"/> 
+                                          <br/>
                                           <span style = "font-size: 16pt" > <strong > <font color = "red" > * </font > Lunch Range Beginning:
                                             <br/> 
                                             </strong> </span> 
@@ -102,14 +104,19 @@
                                           <span style = "font-size: 16pt" > <strong > <font color = "red" > * </font > Lunch Range End:
                                             <br/> 
                                             </strong> </span> 
-                                          <input name = "lunch_range_end"  style = "font-weight: bold; font-size: 16pt;width:" type = "text" /> 
+                                          <input id = "lunch_range_end" name = "lunch_range_end"  style = "font-weight: bold; font-size: 16pt;width:" type = "text" /> 
+                                          <br/> 
+                                          <span style = "font-size: 16pt" > <strong > <font color = "red" > * </font > Repeated Days:
+                                            <br/> 
+                                            </strong> </span> 
+                                          <input id = "repeated_days" name = "repeated_days"  style = "font-weight: bold; font-size: 16pt;width:" type = "text" /> 
                                           <br/> 
                                       <!--      <input type="radio"  name="accType" value="Student">Student   >
                                             <input type="radio"  style = "font-weight: bold; font-size: 16pt;width:" name="accType" value="Administrator">Administrator<br> -->
                                       </p>
                                         <p>
                                           <br/> 
-                                          <input id = "continueButton" style = "font-weight: bold; font-size: 16pt;width:" type = "button" value = "Continue"  onclick = "loginButton()" />
+                                          <input id = "continueButton" style = "font-weight: bold; font-size: 16pt;width:" type = "button" value = "Continue"  onclick = "addSchoolButton()" />
                                           &nbsp;
                                           <input  id = "cancelButton" style = "font-weight: bold; font-size: 16pt;width:" type = "button" value = "Show Users"  onclick = "showButton()" /> 
                                           <br/> 

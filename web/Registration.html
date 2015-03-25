@@ -14,12 +14,12 @@
             function loginButton() 
             {
     $.ajax({
-        url: '/TeamRocket/Hello',
+        url: '/TeamRocket/Register',
         type: 'GET',
         dataType: 'text',
         data: {name : $("#name").val(), email: $("#email").val(), password: $("#password").val()},
         success: function (data)
-        {alert();
+        {
            $("#testH").html(data);
         }
     });
@@ -72,15 +72,9 @@
                                         <p><span style = "font-size: 16pt"> <strong> <font color = "red" > * </font> First Name: </strong>
                                           <br/> 
                                         </span> 
-                                          <input id="name" name = "First_Name"  style = "font-weight: bold; font-size:16pt; width:" type = "text" /> 
+                                          <input id="name" name = "Name"  style = "font-weight: bold; font-size:16pt; width:" type = "text" /> 
                                           <br/>
-                                          <span style = "font-size: 16pt"> 
-                                            <strong > <font color = "red" > * </font > Last Name:
-                                              <br/> 
-                                            </strong>
-                                          </span> 
-                                          <input
-                                            name = "Last_Name"  style = "font-weight: bold; font-size: 16pt;width:" type = "text" /> 
+                                          
                                           <br/>
                                           <span style = "font-size: 16pt"> <strong>
                                             <font color = "red">*</font> Password:<br/> 
