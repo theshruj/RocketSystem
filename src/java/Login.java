@@ -67,7 +67,7 @@ public class Login extends HttpServlet {
                 String name;
                 if (rs.next()) {
                     System.out.println("The user is " + rs.getString("name") + " \nIs in the database");
-                    if (rs.getString("password").equals(password)) {
+                    if (rs.getString("password").equals(password) && rs.getString("accountType").equals("s")) {
                         name = rs.getString("name");
 
                         url = "/Student.html";
