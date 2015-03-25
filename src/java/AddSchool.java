@@ -8,25 +8,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author spari_000
+ * @author Jackie
  */
-@WebServlet("/Login")
+@WebServlet("/AddSchool")
 
-public class Login extends HttpServlet {
-
+public class AddSchool extends HttpServlet{
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,16 +36,29 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
 
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
+        String name = request.getParameter("school_name");
+        int semesters = Integer.parseInt(request.getParameter("semesters"));    
+        //String semesters = request.getParameter("semesters");
+        int daysInSchedule = Integer.parseInt(request.getParameter("days_in_schedule"));
+        //String daysInSchedule = request.getParameter("days_in_schedule");
+        int periodsPerDay = Integer.parseInt(request.getParameter("periods_per_day"));
+        //String periodsPerDay = request.getParameter("periods_per_day");
+        int lunchRangeBegin = Integer.parseInt(request.getParameter("lunch_range_begin"));
+        //String lunchRangeBegin = request.getParameter("lunch_range_begin");
+        int lunchRangeEnd = Integer.parseInt(request.getParameter("lunch_range_end"));
+        //String lunchRangeEnd = request.getParameter("lunch_range_end");
+        int repeatedDays = Integer.parseInt(request.getParameter("repeated_days"));
+        //String repeatedDays = request.getParameter("repeated_days");
+        
+        
         for (int i = 0; i < 10; i++) {
-            System.out.println(email + "  --  " + password);
+            System.out.println(name + semesters + daysInSchedule + periodsPerDay + lunchRangeBegin + lunchRangeEnd + repeatedDays);
         }
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             try {
+                System.out.println(name + "--");
 
                 Class.forName("com.mysql.jdbc.Driver");
                 java.util.Properties sysprops = System.getProperties();
@@ -60,53 +69,17 @@ public class Login extends HttpServlet {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3310/school", sysprops);
                 Statement st = con.createStatement();
 
-                String query = "SELECT * FROM  student  WHERE approved = 'y' and email = \"" + email + "\" ;";
-                ResultSet rs = st.executeQuery(query);
-                String url = "/";
-                String name;
+                String query = "INSERT INTO school  " + "VALUES('" + name + "','" + semesters + "','" + daysInSchedule + "','" + periodsPerDay + "','" +
+                                                   lunchRangeBegin + "','" + lunchRangeEnd + "','" + repeatedDays+"')";
+                System.out.println(query);
 
-                if (rs.next()) {
-                    query = "SELECT * FROM  user  WHERE email = \"" + email + "\" ;";
-                    rs = st.executeQuery(query);
-
-                    if (rs.next()) {
-
-                        System.out.println("The user is " + rs.getString("name") + " \nIs in the database");
-                        if (rs.getString("password").equals(password)) {
-                            if (rs.getString("accountType").equals("s")) {
-                                name = rs.getString("name");
-                                url = "/Student.html";
-                                HttpSession hg = request.getSession();
-                                hg.setAttribute("user", name);
-                                hg.setAttribute("email", email);
-                            } else if (rs.getString("accountType").equals("a")) {
-                                name = rs.getString("name");
-                                url = "/Admin.html";
-                                HttpSession hg = request.getSession();
-                                hg.setAttribute("email", email);
-                                hg.setAttribute("user", name);
-                            }
-                        } else {
-                            out.print("Invalid Password");
-                        }
-
-                    } else {
-                        out.print("Invalid Backend");
-                    }
-
-                } else {
-                    System.out.println("The user is not in the database");
-
-                    out.println("Invalid Email ID");
-                }
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
-
+                st.executeUpdate(query);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("error");
             }
 
+            out.println("The school is " + name + " \nThere is a world of ajax out here");
         }
     }
 
@@ -148,5 +121,4 @@ public class Login extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

@@ -16,6 +16,22 @@
         <servlet-name>tester</servlet-name>
         <servlet-class>tester</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddSchool</servlet-name>
+        <servlet-class>AddSchool</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ApproveAllPendingStudentAccountRequests</servlet-name>
+        <servlet-class>ApproveAllPendingStudentAccountRequests</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ApprovePendingStudentAccountRequests</servlet-name>
+        <servlet-class>ApprovePendingStudentAccountRequests</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DisplayAllPendingStudentAccountRequests</servlet-name>
+        <servlet-class>DisplayAllPendingStudentAccountRequests</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -31,6 +47,22 @@
     <servlet-mapping>
         <servlet-name>tester</servlet-name>
         <url-pattern>/tester</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSchool</servlet-name>
+        <url-pattern>/AddSchool</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveAllPendingStudentAccountRequests</servlet-name>
+        <url-pattern>/ApproveAllPendingStudentAccountRequests</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApprovePendingStudentAccountRequests</servlet-name>
+        <url-pattern>/ApprovePendingStudentAccountRequests</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayAllPendingStudentAccountRequests</servlet-name>
+        <url-pattern>/DisplayAllPendingStudentAccountRequests</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
