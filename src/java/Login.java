@@ -39,13 +39,10 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-
+        HttpSession hg = request.getSession();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
-        for (int i = 0; i < 10; i++) {
-            System.out.println(email + "  --  " + password);
-        }
+        String url = "/index.html";
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -59,58 +56,52 @@ public class Login extends HttpServlet {
 
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3310/school", sysprops);
                 Statement st = con.createStatement();
+                String query = "SELECT * FROM  user  WHERE email = \"" + email + "\" ;";
 
-                String query = "SELECT * FROM  student  WHERE approved = 'y' and email = \"" + email + "\" ;";
                 ResultSet rs = st.executeQuery(query);
-                String url = "/";
-                String name;
 
                 if (rs.next()) {
-                    query = "SELECT * FROM  user  WHERE email = \"" + email + "\" ;";
-                    rs = st.executeQuery(query);
-
-                    if (rs.next()) {
-
-                        System.out.println("The user is " + rs.getString("name") + " \nIs in the database");
-                        if (rs.getString("password").equals(password)) {
-                            if (rs.getString("accountType").equals("s")) {
-                                name = rs.getString("name");
+                    String name = rs.getString("name");
+                    if (rs.getString("password").equals(password)) {
+                        if (rs.getString("accountType").equals("s")) {
+                            query = "SELECT * FROM  student  WHERE approved = 'y' and email = \"" + email + "\" ;";
+                            rs = st.executeQuery(query);
+                            System.out.println("33333333333");
+                            System.out.println(rs.getString("approved"));
+                            if (rs.next() && rs.getString("approved").equals("y")) {
+                                System.out.println("444444444444444444444444");
                                 url = "/Student.html";
-                                HttpSession hg = request.getSession();
                                 hg.setAttribute("user", name);
                                 hg.setAttribute("email", email);
-                            } else if (rs.getString("accountType").equals("a")) {
-                                name = rs.getString("name");
-                                url = "/Admin.html";
-                                HttpSession hg = request.getSession();
-                                hg.setAttribute("email", email);
-                                hg.setAttribute("user", name);
+                                hg.setAttribute("type", "s");
+                            } else {
+                                out.println("Account Waiting Approval");
                             }
-                        } else {
-                            out.print("Invalid Password");
+                        } else if (rs.getString("accountType").equals("a")) {
+                            url = "/Admin.html";
+                            hg.setAttribute("email", email);
+                            hg.setAttribute("user", name);
+                            hg.setAttribute("type", "a");
                         }
+                        System.out.println(url);
+                        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+                        dispatcher.forward(request, response);
 
-                    } else {
-                        out.print("Invalid Backend");
                     }
-
-                } else {
-                    System.out.println("The user is not in the database");
-
-                    out.println("Invalid Email ID");
                 }
+            } catch (Exception e) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher(url);
                 dispatcher.forward(request, response);
-
-            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("error");
             }
-
+        } catch (Exception ff) {
+            System.out.println("Error Lower");
         }
+
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

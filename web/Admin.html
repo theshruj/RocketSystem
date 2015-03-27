@@ -47,7 +47,7 @@ Released for free under a Creative Commons Attribution 3.0 Unported License (CC 
                         $("#studentList").html("");
                         $("#studentList").append("The following accounts have been approved:");
                         for (var i = 0; i < data.length; i++) {
-                            $("#studentList").append("<p>Name: " + data[i].name + " - - - - Email: " + data[i].email + "</p>");
+                            $("#studentList").append("<br><p>Email: " + data[i].email + "</p><p>Name: " + data[i].name);
                         }
                     }
                 });
