@@ -1,9 +1,11 @@
+package Servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import Session.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,8 +19,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author spari_000
  */
-@WebServlet("/tester")
-
 public class tester extends HttpServlet {
 
     /**
@@ -33,13 +33,13 @@ public class tester extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        HttpSession hh =request.getSession();
-        String name = (String )hh.getAttribute("user");
+        HttpSession hh = request.getSession();
+        User user = (User) hh.getAttribute("user");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println(name);
-            System.out.println(name);
-     
+            out.println(user.getName());
+            System.out.println(user);
+
         }
     }
 

@@ -1,3 +1,5 @@
+package Servlets;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -16,7 +18,6 @@ import org.json.simple.JSONObject;
  *
  * @author spari_000
  */
-@WebServlet("/DisplayAllpendingStudentAccountRequests")
 public class DisplayAllPendingStudentAccountRequests extends HttpServlet {
 
     /**
@@ -31,6 +32,9 @@ public class DisplayAllPendingStudentAccountRequests extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
 
         JSONArray jsonArray = new JSONArray();
 
@@ -43,13 +47,13 @@ public class DisplayAllPendingStudentAccountRequests extends HttpServlet {
             sysprops.put("password", "pass");
             //connect to the database
 
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3310/school", sysprops);
-            Statement st = con.createStatement();
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3310/rocketsystem", sysprops);
+            st = con.createStatement();
 
             String query = "SELECT name,student.email FROM user,student WHERE user.email = student.email AND student.approved = 'n'";
             System.out.println(query);
-            ResultSet rs = st.executeQuery(query);
-            
+            rs = st.executeQuery(query);
+
             while (rs.next()) {
                 JSONObject employeeToAdd = new JSONObject();
                 employeeToAdd.put("email", rs.getString("email"));
@@ -58,7 +62,7 @@ public class DisplayAllPendingStudentAccountRequests extends HttpServlet {
                 jsonArray.add(employeeToAdd);
             }
             System.out.println(jsonArray.size());
-                //System.out.println(jsonArray);
+            //System.out.println(jsonArray);
             //set the content type of our response
             response.setContentType("application/json");
             //printout prints it to our ajax call and it shows up there as data. you can use this data in the success function.
@@ -68,6 +72,25 @@ public class DisplayAllPendingStudentAccountRequests extends HttpServlet {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("error");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception ss) {
+            }
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (Exception ss) {
+            }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception ss) {
+            }
         }
 
     }

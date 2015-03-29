@@ -2,39 +2,39 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>Login</servlet-class>
+        <servlet-class>Servlets.Login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Register</servlet-name>
-        <servlet-class>Register</servlet-class>
+        <servlet-class>Servlets.Register</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Show</servlet-name>
-        <servlet-class>Show</servlet-class>
+        <servlet-class>Servlets.Show</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>tester</servlet-name>
-        <servlet-class>tester</servlet-class>
+        <servlet-class>Servlets.tester</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddSchool</servlet-name>
-        <servlet-class>AddSchool</servlet-class>
+        <servlet-class>Servlets.AddSchool</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ApproveAllPendingStudentAccountRequests</servlet-name>
-        <servlet-class>ApproveAllPendingStudentAccountRequests</servlet-class>
+        <servlet-class>Servlets.ApproveAllPendingStudentAccountRequests</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ApprovePendingStudentAccountRequests</servlet-name>
-        <servlet-class>ApprovePendingStudentAccountRequests</servlet-class>
+        <servlet-class>Servlets.ApprovePendingStudentAccountRequests</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DisplayAllPendingStudentAccountRequests</servlet-name>
-        <servlet-class>DisplayAllPendingStudentAccountRequests</servlet-class>
+        <servlet-class>Servlets.DisplayAllPendingStudentAccountRequests</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Logout</servlet-name>
-        <servlet-class>Logout</servlet-class>
+        <servlet-class>Servlets.Logout</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>

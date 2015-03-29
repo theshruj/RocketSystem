@@ -1,31 +1,27 @@
+package Servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author spari_000
  */
-@WebServlet("/Login")
-
-public class Login extends HttpServlet {
+public class Register extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,14 +35,23 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        HttpSession hg = request.getSession();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
         String email = request.getParameter("email");
+
+        String name = request.getParameter("name");
+
         String password = request.getParameter("password");
-        String url = "/index.html";
+        for (int i = 0; i < 10; i++) {
+            System.out.println(email + name + password);
+        }
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             try {
+                System.out.println(email + "--");
 
                 Class.forName("com.mysql.jdbc.Driver");
                 java.util.Properties sysprops = System.getProperties();
@@ -54,54 +59,47 @@ public class Login extends HttpServlet {
                 sysprops.put("password", "pass");
                 //connect to the database
 
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3310/school", sysprops);
-                Statement st = con.createStatement();
-                String query = "SELECT * FROM  user  WHERE email = \"" + email + "\" ;";
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3310/rocketsystem", sysprops);
+                st = con.createStatement();
 
-                ResultSet rs = st.executeQuery(query);
+                String query = "INSERT INTO user  " + "VALUES('" + email + "','" + name + "','" + password + "'," + "'s')";
+                System.out.println(query);
 
-                if (rs.next()) {
-                    String name = rs.getString("name");
-                    if (rs.getString("password").equals(password)) {
-                        if (rs.getString("accountType").equals("s")) {
-                            query = "SELECT * FROM  student  WHERE approved = 'y' and email = \"" + email + "\" ;";
-                            rs = st.executeQuery(query);
-                            System.out.println("33333333333");
-                            System.out.println(rs.getString("approved"));
-                            if (rs.next() && rs.getString("approved").equals("y")) {
-                                System.out.println("444444444444444444444444");
-                                url = "/Student.html";
-                                hg.setAttribute("user", name);
-                                hg.setAttribute("email", email);
-                                hg.setAttribute("type", "s");
-                            } else {
-                                out.println("Account Waiting Approval");
-                            }
-                        } else if (rs.getString("accountType").equals("a")) {
-                            url = "/Admin.html";
-                            hg.setAttribute("email", email);
-                            hg.setAttribute("user", name);
-                            hg.setAttribute("type", "a");
-                        }
-                        System.out.println(url);
-                        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                        dispatcher.forward(request, response);
+                st.executeUpdate(query);
 
-                    }
-                }
+                query = "INSERT INTO student  " + "VALUES('" + email + "', 'n')";
+                System.out.println(query);
+
+                st.executeUpdate(query);
             } catch (Exception e) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
                 System.out.println(e.getMessage());
                 System.out.println("error");
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                } catch (Exception ss) {
+                }
+                try {
+                    if (st != null) {
+                        st.close();
+                    }
+                } catch (Exception ss) {
+                }
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (Exception ss) {
+                }
             }
-        } catch (Exception ff) {
-            System.out.println("Error Lower");
-        }
 
+            out.println("The user is " + name + " \nThere is a world of ajax out here");
+        }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

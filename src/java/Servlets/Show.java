@@ -1,10 +1,16 @@
+package Servlets;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +21,9 @@ import org.json.simple.JSONObject;
 
 /**
  *
- * @author rhododendron
+ * @author spari_000
  */
-@WebServlet("/ApprovePendingStudentAccountRequests")
-public class ApprovePendingStudentAccountRequests extends HttpServlet {
+public class Show extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,53 +37,67 @@ public class ApprovePendingStudentAccountRequests extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
         JSONArray jsonArray = new JSONArray();
-        String[] emails =(String[]) request.getParameter("emails").split("\\?");
-        System.out.println("Length of email list is " +emails.length);
-        
-            try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                try {
 
-                    Class.forName("com.mysql.jdbc.Driver");
-                    java.util.Properties sysprops = System.getProperties();
-                    sysprops.put("user", "root");
-                    sysprops.put("password", "pass");
-                    //connect to the database
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
 
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3310/school", sysprops);
-                    Statement st = con.createStatement();
-        for(int i = 0; i < emails.length; i++){ 
+            Class.forName("com.mysql.jdbc.Driver");
+            java.util.Properties sysprops = System.getProperties();
+            sysprops.put("user", "root");
+            sysprops.put("password", "pass");
+            //connect to the database
 
-                    String query = "SELECT name,student.email FROM user,student "
-                            + "WHERE user.email = student.email AND student.approved = 'n'"
-                            + "AND student.email = '" + emails[i] + "'";
-                    
-                    ResultSet rs = st.executeQuery(query);
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3310/rocketsystem", sysprops);
+            st = con.createStatement();
 
-                    if (rs.next()) {
-                        JSONObject employeeToAdd = new JSONObject();
-                        employeeToAdd.put("email", rs.getString("email"));
-                        employeeToAdd.put("name", rs.getString("name"));
-                        //System.out.println(rs.getString("name"));
-                        jsonArray.add(employeeToAdd);
-                    }
-                    
-                    String updateQ = "UPDATE student "
-                            + "SET approved = 'y' "
-                            + "WHERE student.approved = 'n' AND student.email = '" + emails[i] + "'";
+            String query = "SELECT * FROM user";
 
-                    st.executeUpdate(updateQ);
-        }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("error");
-                }
-                                    out.println(jsonArray);
-                                    System.out.println(jsonArray);
+            rs = st.executeQuery(query);
 
+            while (rs.next()) {
+                JSONObject employeeToAdd = new JSONObject();
+                employeeToAdd.put("email", rs.getString("email"));
+                employeeToAdd.put("name", rs.getString("name"));
+                //System.out.println(rs.getString("name"));
+                jsonArray.add(employeeToAdd);
             }
-        
+            System.out.println(jsonArray.size());
+            //System.out.println(jsonArray);
+            //set the content type of our response
+            response.setContentType("application/json");
+            //printout prints it to our ajax call and it shows up there as data. you can use this data in the success function.
+
+            out.print(jsonArray);
+            out.flush();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("error");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception ss) {
+            }
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (Exception ss) {
+            }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception ss) {
+            }
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -119,4 +138,5 @@ public class ApprovePendingStudentAccountRequests extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }
