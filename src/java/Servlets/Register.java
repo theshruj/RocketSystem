@@ -62,12 +62,12 @@ public class Register extends HttpServlet {
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3310/rocketsystem", sysprops);
                 st = con.createStatement();
 
-                String query = "INSERT INTO user  " + "VALUES('" + email + "','" + name + "','" + password + "'," + "'s')";
+                String query = "INSERT INTO user  " + "VALUES('" + email + "','" + name + "','s', '" + password + "')";
                 System.out.println(query);
 
                 st.executeUpdate(query);
 
-                query = "INSERT INTO student  " + "VALUES('" + email + "', 'n')";
+                query = "INSERT INTO student  " + "VALUES('" + email + "', 'y')";
                 System.out.println(query);
 
                 st.executeUpdate(query);

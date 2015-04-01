@@ -55,7 +55,7 @@ public class ApprovePendingStudentAccountRequests extends HttpServlet {
                 for (int i = 0; i < emails.length; i++) {
 
                     String query = "SELECT name,student.email FROM user,student "
-                            + "WHERE user.email = student.email AND student.approved = 'n'"
+                            + "WHERE user.email = student.email AND student.pending = 'y'"
                             + "AND student.email = '" + emails[i] + "'";
 
                     rs = st.executeQuery(query);
@@ -69,8 +69,8 @@ public class ApprovePendingStudentAccountRequests extends HttpServlet {
                     }
 
                     String updateQ = "UPDATE student "
-                            + "SET approved = 'y' "
-                            + "WHERE student.approved = 'n' AND student.email = '" + emails[i] + "'";
+                            + "SET pending = 'n' "
+                            + "WHERE student.pending = 'y' AND student.email = '" + emails[i] + "'";
 
                     st.executeUpdate(updateQ);
                 }

@@ -50,7 +50,7 @@ public class DisplayAllPendingStudentAccountRequests extends HttpServlet {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3310/rocketsystem", sysprops);
             st = con.createStatement();
 
-            String query = "SELECT name,student.email FROM user,student WHERE user.email = student.email AND student.approved = 'n'";
+            String query = "SELECT name,student.email FROM user,student WHERE user.email = student.email AND student.pending = 'y'";
             System.out.println(query);
             rs = st.executeQuery(query);
 

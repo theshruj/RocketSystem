@@ -38,6 +38,7 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("LOGIN SERVLET");
         response.setContentType("text/html");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -47,29 +48,32 @@ public class Login extends HttpServlet {
         Statement st = null;
         ResultSet rs = null;
 
-        PrintWriter out = response.getWriter();
         /* TODO output your page here. You may use following sample code. */
         try {
+            PrintWriter out = response.getWriter();
+
             Class.forName("com.mysql.jdbc.Driver");
             java.util.Properties sysprops = System.getProperties();
             sysprops.put("user", "root");
             sysprops.put("password", "pass");
-
             //connect to the database
             con = DriverManager.getConnection("jdbc:mysql://localhost:3310/rocketsystem", sysprops);
             st = con.createStatement();
             String query = "SELECT * FROM  user  WHERE email = \"" + email + "\" ;";
             rs = st.executeQuery(query);
+            System.out.println("123");
 
             if (rs.next()) {
+                System.out.println("123W");
+
                 String name = rs.getString("name");
                 if (rs.getString("password").equals(password)) {
                     if (rs.getString("accountType").equals("s")) {
                         query = "SELECT * FROM  student  WHERE approved = 'y' and email = \"" + email + "\" ;";
                         rs = st.executeQuery(query);
                         System.out.println("student table query works");
-                        if (rs.next() && rs.getString("approved").equals("y")) {
-                            System.out.println("approved = yin student table");
+                        if (rs.next() && rs.getString("pending").equals("n")) {
+                            System.out.println("pending = n then in student table");
                             url = "/Student.jsp";
                             User current = new User(name, email, password, "s");
                             HttpSession hg = request.getSession();
@@ -86,15 +90,16 @@ public class Login extends HttpServlet {
                         hg.setAttribute("user", current);
                     }
                 }
-                System.out.println(url);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
+
             }
-        } catch (Exception e) {
-            System.out.println(url);
+            System.out.println("URL: " + url);
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("URL: " + url);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+            dispatcher.forward(request, response);
+            System.out.println(e);
             System.out.println("error");
         } finally {
             try {

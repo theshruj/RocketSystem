@@ -63,8 +63,8 @@ public class ApproveAllPendingStudentAccountRequests extends HttpServlet {
             }
 
             String updateQ = "UPDATE student "
-                    + "SET approved = 'y' "
-                    + "WHERE student.approved = 'n'";
+                    + "SET pending = 'n' "
+                    + "WHERE student.pending = 'y'";
 
             st.executeUpdate(updateQ);
 
